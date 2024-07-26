@@ -1,0 +1,135 @@
+<html>
+    <head>
+        <title>Search Engine</title>
+    </head>
+    <style>
+        body{
+            padding:0;
+            margin:0;
+            background:linear-gradient(45deg,#6203f1,#6203f1);
+        }
+        
+         h1{
+            text-align:center;
+            padding:100px 0 0 0;
+            font-family:'Poppins',sans-serif;
+            color:white;
+            font-size:30px;
+        }
+        span{
+            color:rgb(250, 124, 6);
+        }
+        #input-field{
+            height:60px;
+            max-width:600px;
+            width:90%;
+            margin:auto;
+            background-color:rgba(64, 4, 148, 0.937);
+            border-radius:5px;
+            border:0;
+            display:flex;
+            align-items: center;
+        }
+        #search-box{
+            flex:1;
+            height:100%;
+            padding:0 25px;
+            border-radius:5px;
+            border:0;
+            outline:0;
+            background-color:transparent;
+            font-size:18px;
+            color:white;
+        }
+        #search-btn{
+            padding:0 40px;
+            height:100%;
+            font-size:18px;
+            background-color:#ff3929;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            border:0;
+            outline:0;
+            cursor:pointer;
+        }
+        ::placeholder{
+            color:white;
+        }
+        #shw-more-btn{
+            padding:10px 15px;
+            margin:10px 700px auto;
+            border-radius:4px;
+            background-color:#ff3929;
+            font-size:16px;
+            border:0;
+            box-shadow:0 2px 3px rgb(0,0,0,0.4);
+            cursor:pointer;
+            display:none;
+        }
+        #search-result{
+            width:80%;
+            margin:100px auto 50px;
+            display:grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-gap:40px;
+        }
+        #search-result img{
+            height:230px;
+            width:100%;
+        
+            background-size:cover;
+            border-radius:4px;
+        }
+    </style>
+    <body>
+            
+            <h1><span>Image</span> Search Engine</h1>
+            <form action="/" id="input-field">
+                <input type="text" id="search-box" placeholder="Search here...">
+                <button id="search-btn">Search</button>
+            </form>
+            <div id="search-result"></div>
+            <button type="submit" id="shw-more-btn">Show More</button>
+        </form>
+        <script>
+            const search=document.getElementById("input-field");
+            const searchBox=document.getElementById("search-box");
+            const btn=document.getElementById("search-btn");
+            const more=document.getElementById("shw-more-btn");
+            const searchResult=document.getElementById("search-result");
+            let accessKey="oQEmnKwY72H6Ad2S34e8_lxFLvI0uhyUveq0pw3opyk";
+            let keyword="";
+            let page=1;
+            async function searchImages(){
+               keyword=searchBox.value;
+               let url=`https://api.unsplash.com/search/photos?page=${page}&query=${keyword}&client_id=${accessKey}&per_page=12`;
+               const response=await fetch(url);
+               const data=await response.json();
+               if(page===1){
+                searchResult.innerHTML="";
+               }
+               const results=data.results;
+    
+               results.map((result)=>{
+                const img=document.createElement("img");
+                img.src=result.urls.small_s3;
+                const imageLink=document.createElement("a");
+                imageLink.href=result.links.html;
+                imageLink.traget="_blank";
+                imageLink.appendChild(img);
+                searchResult.appendChild(imageLink);
+               })
+               more.style.display="block";
+            }
+            search.addEventListener("submit",(e) => {
+                e.preventDefault();
+                page=1;
+                searchImages();
+            });
+            more.addEventListener('click',()=>{
+                page++;
+                searchImages();
+            })
+        </script>
+    </body>
+</html>

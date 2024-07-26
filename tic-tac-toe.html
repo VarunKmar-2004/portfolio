@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        padding:0;
+        margin:0;
+        background-color:#3D2541;
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .container{
+        height:70vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .game-box{
+        height: 65vmin;
+        width:65vmin;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+    .box{
+        height:22vmin;
+        width:20vmin;
+        border:none;
+        border-radius:5px;
+        font-size:10vmin;
+        cursor:pointer;
+        background-color:#3B20EC;
+        color:white;
+    }
+    .box:nth-child(1){
+        border-right:2px solid black;
+        border-bottom: 2px solid black;
+    }
+    .box:nth-child(4){
+        border-right:2px solid black;
+        border-bottom: 2px solid black;
+    }
+    .box:nth-child(7){
+        border-right:2px solid black;
+    }
+    .box:nth-child(2){
+        border-right:2px solid black;
+        border-bottom: 2px solid black;
+    }
+    .box:nth-child(3){
+        border-bottom: 2px solid black;
+    }
+    .box:nth-child(5){
+        border-right:2px solid black;
+        border-bottom: 2px solid black;
+    }
+    .box:nth-child(6){
+        border-bottom: 2px solid black;
+    }
+    .box:nth-child(8){
+        border-right:2px solid black;
+    }
+    h1,p{
+        text-align: center;
+    }
+    .msg{
+        font-size:25px;
+        color:white;
+        display: none;
+    }
+    .newgame{
+        padding:10px 20px;
+        font-size:20px;
+        border-radius:5px;
+        border:none;
+        box-shadow: 0 2px 3px rgb(0,0,0,0.3);
+        margin:20px;
+        text-align: center;
+        cursor:pointer;
+        display:none;
+    }
+</style>
+<body>
+    <h1>Tic-Tac-Toe</h1>
+    <p class="msg">Congratulations Winner X</p>
+    <div class="container">
+        <div class="game-box">
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+        </div>
+    </div>
+    <button class="newgame">New Game</button>
+<script>
+    const game_container=document.querySelectorAll(".box");
+    const msg_container=document.querySelector(".msg");
+    const newbtn=document.querySelector(".newgame");
+    let turnX=true;
+    let winningpattern=[
+        [0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]
+    ];
+    game_container.forEach((box)=>{
+        box.addEventListener("click",()=>{
+            if(turnX){
+                box.textContent="X";
+                turnX=false;
+            }
+            else{
+                box.textContent="O";
+                turnX=true;
+            }
+            box.disabled=true;
+            checkWinner();
+        })
+    })
+    const disablebtn=()=>{
+        game_container.forEach((box)=>{
+            box.disabled=true;
+        })
+    }
+    const reset=()=>{
+        turnX=true;
+        msg_container.style.display="none";
+        game_container.forEach((box)=>{
+            box.textContent="";
+        })
+        enablebtn();
+        newbtn.style.display="none";
+    }
+    const enablebtn=()=>{
+        game_container.forEach((box)=>{
+            box.disabled=false;
+        })
+    }
+    const showWinner=(winner)=>{
+        msg_container.textContent=`Winner is ${winner}`;
+        msg_container.style.display="block";
+        disablebtn();
+        newbtn.style.display="block";
+    }
+    let gamewon=false;
+    const checkWinner=()=>{
+        let filledBoxes=0;
+        for(let pattern of winningpattern){
+             let pos1=game_container[pattern[0]].textContent;
+             let pos2=game_container[pattern[1]].textContent;
+             let pos3=game_container[pattern[2]].textContent;
+             if (pos1 !== "" && pos1 === pos2 && pos2 === pos3) {
+                    showWinner(pos1);
+                    gamewon=true;
+                }
+            }
+            game_container.forEach((box) => {
+            if (box.textContent !== "") {
+                filledBoxes++;
+            }
+        });
+        if (filledBoxes === 9&& !gamewon) {
+            msg_container.textContent = "Match Drawn!!";
+            msg_container.style.display = "block";
+            disablebtn();
+            newbtn.style.display = "block";
+        }
+    }
+    newbtn.addEventListener("click",reset);
+</script>
+</body>
+</html>

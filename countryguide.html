@@ -1,0 +1,104 @@
+<html>
+    <head>
+        <title>Country Guide</title>
+    </head>
+    <style>
+        body{
+            padding:0;
+            margin:0;
+            font-family:cursive;
+            background-color:#167be0;
+        }
+        .container{
+            max-width:400px;
+            width:90%;
+            background-color:aliceblue;
+            padding:10px 40px;
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform: translate(-50%,-50%);
+            border-radius:10px;
+            box-shadow:0 4px 5px rgb(0,0,0,0.4);
+        }
+        #input-country{
+            width:100%;
+            display:flex;
+            justify-content: space-between;
+            margin:10px;
+        }
+        #input-country input{
+            width:70%;
+            padding:8px 4px 4px;
+            border:0;
+            outline:0;
+            border-bottom:3px solid rgb(25, 106, 245);
+            font-size:16px;
+            color:#333;
+        }
+        #input-country button{
+            width:25%;
+            padding:10px;
+            background-color:rgb(35, 103, 238);
+            border:0;
+            border-radius:4px;
+            font-size:16px;
+            color:white;
+            cursor:pointer;
+        }
+        #country-flag{
+            padding:10px;
+            display:flex;
+            justify-content: center;
+        }
+        #country-flag img{
+            width:200px;
+            margin-top:30px;
+            margin-bottom:10px;
+            box-shadow:0 3px 5px rgb(0,0,0,0.3);
+        }
+        #details p{
+            margin-left:20px;
+        }
+    </style>
+    <body>
+        <div class="container">
+            <div id="input-country">
+                <input type="text" id="input" placeholder="Search here...">
+                <button id="search-btn" type="submit" onclick="country();">Search</button>
+            </div>
+            <div id="result">
+                
+            </div>
+        </div>
+        <script>
+            const input=document.getElementById("input");
+            const btn=document.getElementById("search-btn");
+            const result=document.getElementById("result");
+            async function country(){
+                const countryName=input.value.trim();
+                const url=`https://restcountries.com/v3.1/name/${countryName}?fullText=true`;
+                const response= await fetch(url);
+                const data=await response.json();
+                console.log(data);
+                if(countryName){
+                    result.innerHTML=`
+                    <div id="country-flag">
+                    <img src="${data[0].flags.svg}">
+                </div>
+                <div id="details">
+                    <p>Country : <span>${data[0].name.common}</span></p>
+                    <p>Capital : <span>${data[0].capital[0]}</span></p>
+                    <p>Population : <span>${data[0].population}</span></p>
+                    <p>Continent : <span>${data[0].continents}</span></p>
+                </div>
+                    
+                    `;
+                }
+                else{
+                    result.innerHTML=`<p> Enter correct Name</p>`
+                }
+            }
+        </script>
+    </body>
+</html>

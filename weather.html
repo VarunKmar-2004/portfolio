@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <title>Know your Weather</title>
+        <script src="https://kit.fontawesome.com/9b22c929e1.js" crossorigin="anonymous"></script> 
+    </head>
+<style>
+body{ margin:0; padding:0; background-color:rgb(22, 69, 211); font-family:cursive; } .container{ max-width:300px; width:90%; background:linear-gradient(45deg,#0bab93,#37a6d9); position:absolute; top:50%; left:50%; transform: translate(-50%,-50%); padding:20px 30px; border-radius:20px; box-shadow:0 10px 12px rgb(0,0,0,0.5); } .input{ width:100%; display:flex; justify-content: space-between; align-items: center; margin-bottom:10px; } .input input{ padding:15px 4px 2px; width:80%; border:0; border-bottom:3px solid blueviolet; outline:0; background-color:transparent; font-size: 17px; color:white; } ::placeholder{ color:white; } .input button{ width:50px; height:50px; background-color: rgb(30, 103, 220); border:none; border-radius: 50%; font-size:18px; color:white; cursor:pointer; } .weather-images{ width:100%; padding:10px 10px 0 10px; display:flex; justify-content: center; transition:0.2s ease all; position:relative;}
+.weather-images img{
+    width:180px;
+    margin-left:-15px;
+}
+.place{
+    width:100%;
+    text-align: center;
+    color:white;
+    font-size: 18px;
+}
+.temp{
+    width:100%;
+    text-align:center;
+    margin-top:-20px;
+    font-size:18px;
+    color:white;
+}
+</style>
+<body>
+<div class="container">
+    <div class="input">
+        <input type="text" id="input-word" placeholder="Search here...">
+        <button type="submit" id="btn">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+    </div>
+    <div class="weather-images">
+        <img src="cloud.png" id="weather">
+    </div>
+    <div class="temp">
+        <h2 id="temperature">39°C</h2>
+    </div>
+    <div class="place">
+        <h2 id="name">Hyderabad</h2>
+    </div>
+</div>
+<script>
+    const apiKey="91f6f4fc45eb34436d0ae774ac975c8b";
+    const search=document.getElementById("input-word");
+    const btn=document.getElementById("btn");
+    const images=document.getElementById("weather");
+    const temp=document.getElementById("temperature");
+    const city=document.getElementById("name");
+
+    async function weatherReport(cityy) { 
+       const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityy}&appid=${apiKey}&units=metric`);
+       const data = await response.json();
+       console.log(data);
+       temp.textContent=`${Math.round(data.main.temp)}°C`;
+       city.textContent=data.name;
+       const weather=data.weather[0].main;
+       if(weather){
+        if(weather ==="Clouds"){
+            images.src="cloud.png";
+        }
+        if(weather ==="Clear"){
+            images.src="clear.png";
+        }
+        if(weather==="Haze"){
+            images.src="drizzle.png";
+        }
+       }
+    }
+    btn.addEventListener("click",()=>{
+        const searchValue=search.value.trim();
+        weatherReport(searchValue);
+    })
+</script>
+</body>
