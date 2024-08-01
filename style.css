@@ -412,6 +412,7 @@ body{
     border-radius:2rem;
     overflow:hidden;
     display:flex;
+    flex-wrap:wrap;
     box-shadow:0 0 1rem var(--main-color);
 }
 .certificate-box img{
