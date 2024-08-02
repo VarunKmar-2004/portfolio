@@ -518,4 +518,10 @@ body{
        align-items: center;
        justify-content: center;
     }
+    .certifications .certificate-container{
+        display:grid;
+       grid-template-columns: 0.7fr;
+       align-items: center;
+       justify-content: center;
+    }
 }
